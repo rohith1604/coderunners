@@ -1,3 +1,3 @@
 # coderunners
 all the lab programs avaliable here.........
-foe education purpose only 
+for education purpose only 
