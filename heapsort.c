@@ -1,66 +1,58 @@
-#include<stdio.h>
-#include<conio.h>
-#include<time.h>
-Void heapsort(int a[],int n)
-{
-inti,temp;
-heapfun(a,n);
-for(i=n-1;i>=0;i--)
-{
-temp=a[0];
-a[0]=a[i];
-a[i]=temp;
-heapfun(a,i);
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
+
+void heapify(int arr[], int n, int rootIndex) {
+    int largest = rootIndex;   
+    int leftChild = 2 * rootIndex + 1;
+    int rightChild = 2 * rootIndex + 2;
+    if (leftChild < n && arr[leftChild] > arr[largest])
+        largest = leftChild;
+    if (rightChild < n && arr[rightChild] > arr[largest])
+        largest = rightChild;
+
+    if (largest != rootIndex) {
+        swap(&arr[rootIndex], &arr[largest]);
+        heapify(arr, n, largest);
+    }
 }
-heapfun(int a[],int n)
-{
-intp,c,k,key;
-for(k=0;k<n;k++)
- {
-key=a[k];
- c=k;
- p=(c-1)/2;
-while(c>0&&key>a[p])
- {
-a[c]=a[p];
- c=p;
- p=(c-1)/2;
- }
-a[c]=key;
- }
-return;
+
+
+void heapSort(int arr[], int n) {
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+    for (int i = n - 1; i > 0; i--) {
+        swap(&arr[0], &arr[i]);
+        heapify(arr, i, 0);
+    }
 }
-void main()
-{
-int a[40],i,n;
-clock_tstart,end;
-float t;
-clrscr();
-printf("enter the no of elements\n");
-scanf("%d",&n);
-printf("elements are\n");
-for(i=0;i<n;i++)
- {
-a[i]=rand()%100;
- }
-printf("randomly selected elements are\n");
-for(i=0;i<n;i++)
- {
-printf("%d\n",a[i]);
- }
-start=clock();
-delay(100);
-for(i=0;i<n;i++)
- {
-heapsort(a,n-i);
- }
-end=clock();
-t=(end-start)/CLK_TCK;
-printf("sorted array is\n");
-for(i=0;i<n;i++)
- {
-printf("%d\n",a[i]);
- }
-printf("time complexity is %f",t);
+
+int main() {
+    int n;
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    int* arr = (int*)malloc(n * sizeof(int));
+    srand(time(NULL));
+    for (int i = 0; i < n; i++)
+        arr[i] = rand() % 1000;
+    clock_t start = clock();
+    heapSort(arr, n);
+    clock_t end = clock();
+
+    double timeTaken = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+    printf("\nSorted array: ");
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+
+    printf("\nTime taken: %lf seconds\n", timeTaken);
+    free(arr);
+
+    return 0;
 }
